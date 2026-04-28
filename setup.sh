@@ -6,10 +6,14 @@ echo "🧼 Cleaning up any previous Chrome installs..."
 sudo rm -f /usr/bin/google-chrome || true
 rm -rf ~/chrome138
 
-echo "⬇️ Downloading Chrome for Testing (v138)..."
-mkdir -p ~/chrome138 && cd ~/chrome138
-wget https://storage.googleapis.com/chrome-for-testing-public/138.0.7204.93/linux64/chrome-linux64.zip
-unzip chrome-linux64.zip
+echo "⬇️ Downloading latest Chrome for Testing..."
+
+LATEST_JSON=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json)
+CHROME_URL=$(echo "$LATEST_JSON" | jq -r '.channels.Stable.downloads.chrome[] | select(.platform=="linux64").url')
+
+mkdir -p ~/chrome-latest && cd ~/chrome-latest
+wget -q "$CHROME_URL" -O chrome-linux64.zip
+unzip -q chrome-linux64.zip
 
 echo "🔗 Linking chrome binary to /usr/bin/google-chrome"
 sudo ln -sf "$PWD/chrome-linux64/chrome" /usr/bin/google-chrome
