@@ -13,7 +13,7 @@ public class ContactTest extends BaseTest {
 	@Test
 	public void testContactFormSubmit() {
 		driver.get("https://practicesoftwaretesting.com/contact");
-
+		System.out.println(driver.getCurrentUrl());
 		ContactPage contactPagePom = new ContactPage(driver);
 
 		//FillForm
